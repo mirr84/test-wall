@@ -20,7 +20,11 @@ class App extends React.Component {
   }
 
   addNewBrick = (text) => {
-    fetch("/api/bricks", {method:"post", body: {text}})
+    fetch("/api/bricks", {
+        method:"post", 
+        body: JSON.stringify({text}),
+        headers: { "Content-Type": "application/json" }
+      })
       .then(resp => resp.json())
       .then(() => this.fetchAllBricks() )
   }

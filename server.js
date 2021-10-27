@@ -1,6 +1,7 @@
-const express = require('express');
+const express = require('express')
+const path = require('path')
 
-const app = express();
+const app = express()
 app.use(express.json())
 
 const bricks = [
@@ -19,7 +20,7 @@ app.get(
 app.post(
     "/api/bricks",
     (req, res) => {
-        console.log("post bricks " + req.body.text);
+        console.log("post bricks json " + JSON.stringify(req.body));
         const body = req.body;
         const newBrick = {id: "111", text: body.text}
         bricks.push(newBrick)
@@ -28,6 +29,8 @@ app.post(
     }
 )
 
+app.use(express.static(path.join(__dirname, 'client/build')))
+app.get('*', (req, res) => { res.sendFile(path.join(__dirname, 'client/build/index.html')) })
 
 app.listen(5000, ()=> { 
     console.log('server is running...')

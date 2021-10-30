@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Form from './components/Form'
+import MyLayout from './components/Layout';
 import List from './components/List'
 
 class App extends React.Component {
@@ -34,11 +35,12 @@ class App extends React.Component {
     const {bricks} = this.state
 
     return (
-      <div>
-        App
-        <Form addNewBrick={this.addNewBrick} />
-        <List bricks={bricks} />
-      </div>
+      // <div>
+      //   App
+      //   <Form addNewBrick={this.addNewBrick} />
+      //   <List bricks={bricks} />
+      // </div>
+      <MyLayout />
     )
   }
 

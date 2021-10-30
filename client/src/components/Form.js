@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Input, Button } from 'antd';
+
 class Form extends React.Component {
   
   state = {
@@ -13,8 +15,8 @@ class Form extends React.Component {
 
     return (
       <div>
-        <input type="text" value={this.state.text} name="text" onChange={this.onInputChange} />
-        <button onClick={this.onButtonClick} >send message</button>
+        <Input type="text" value={this.state.text} name="text" onChange={this.onInputChange} />
+        <Button type="primary" onClick={this.onButtonClick} > send message </Button>
       </div>
     )
   }

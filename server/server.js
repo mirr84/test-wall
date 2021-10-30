@@ -58,7 +58,7 @@ apiPromise(app, ["api","bricks"], "public", "get")
 apiPromise(app, ["api","bricks"], "public", "post")
 
 apiPromise(app, ["api","users","auth"], "public", "get")
-apiPromise(app, ["api","users","check"], "public", "get")
+apiPromise(app, ["api","users","check"], "private", "get")
 apiPromise(app, ["api","users","reg"], "public", "post")
 
 app.use(express.static(path.join(__dirname, './../client/build')))

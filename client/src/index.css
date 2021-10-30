@@ -1,0 +1,39 @@
+#root {
+  height: 100%;
+}
+
+.logo {
+  float: left;
+  width: 120px;
+  height: 31px;
+  margin: 16px 24px 16px 0;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.ant-row-rtl .logo {
+  float: right;
+  margin: 16px 0 16px 24px;
+}
+
+
+.ant-layout-sider, .ant-layout-content {
+  background: #fff;
+}
+
+.site-layout-background {
+  background: #f0f2f5;
+  padding: 0 50px;
+}
+
+.ant-layout-footer, .ant-breadcrumb {
+  margin: 10px 50px 10px 60px;
+  background: #fff;
+}
+
+.ant-layout-content {
+  margin-left: 10px;
+}
+
+.ant-layout {
+  min-height: 100%;
+}

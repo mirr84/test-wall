@@ -1,8 +1,11 @@
 import React from 'react';
 
 import Form from './components/Form'
-import MyLayout from './components/Layout';
+import MyLayout from './components/Layout'
 import List from './components/List'
+
+import getBricks from './services'
+import axios from 'axios'
 
 class App extends React.Component {
 
@@ -14,21 +17,15 @@ class App extends React.Component {
     this.fetchAllBricks()
   }
 
-  fetchAllBricks = () => {
-    fetch("/api/bricks")
-      .then(resp => resp.json())
+  fetchAllBricks = () =>
+    axios.get(`/api/bricks`)
+      .then(resp => resp.data)
       .then(bricks => { this.setState({ bricks }) })
-  }
 
-  addNewBrick = (text) => {
-    fetch("/api/bricks", {
-      method: "post",
-      body: JSON.stringify({ text }),
-      headers: { "Content-Type": "application/json" }
-    })
-      .then(resp => resp.json())
+  addNewBrick = (text) =>
+    axios.post(`/api/bricks`, { text })
+      .then(resp => resp.data)
       .then(() => this.fetchAllBricks())
-  }
 
   render() {
 

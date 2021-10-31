@@ -15,19 +15,27 @@
   margin: 16px 0 16px 24px;
 }
 
-
 .ant-layout-sider, .ant-layout-content {
   background: #fff;
 }
 
 .site-layout-background {
   background: #f0f2f5;
-  padding: 0 50px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
-.ant-layout-footer, .ant-breadcrumb {
-  margin: 10px 50px 10px 60px;
+.ant-layout-footer {
+  margin: 10px;
   background: #fff;
+  padding: 10px;
+}
+
+.ant-breadcrumb {
+  background: #fff;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
 }
 
 .ant-layout-content {
@@ -37,3 +45,5 @@
 .ant-layout {
   min-height: 100%;
 }
+
+

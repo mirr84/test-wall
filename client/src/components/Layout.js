@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Layout, Menu, Breadcrumb } from 'antd';
-import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
+import { UserOutlined } from '@ant-design/icons';
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
@@ -22,7 +22,7 @@ class MyLayout extends React.Component {
             </Header>
 
             <Content className="site-layout-background">
-                <Breadcrumb style={{ margin: '16px 0', padding: 10 }}>
+                <Breadcrumb>
                     <Breadcrumb.Item>Home</Breadcrumb.Item>
                     <Breadcrumb.Item>List</Breadcrumb.Item>
                     <Breadcrumb.Item>App</Breadcrumb.Item>
@@ -43,7 +43,7 @@ class MyLayout extends React.Component {
                             </SubMenu>
                         </Menu>
                     </Sider>
-                    <Content style={{ padding: 10, minHeight: "280" }}>
+                    <Content className="site-layout-content" style={{ padding: 10, minHeight: "280" }}>
                         { this.props.content }
                     </Content>
                 </Layout>

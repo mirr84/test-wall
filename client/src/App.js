@@ -4,18 +4,18 @@ import Form from './components/Form'
 import MyLayout from './components/Layout'
 import List from './components/List'
 
-import getBricks from './services'
+import {connector} from "./store/utils/simpleConnector";
 import axios from 'axios'
 
 class App extends React.Component {
 
-  state = {
-    bricks: []
-  }
-
   componentDidMount() {
     this.fetchAllBricks()
   }
+
+  state = {
+    bricks: []
+  }  
 
   fetchAllBricks = () =>
     axios.get(`/api/bricks`)
@@ -31,6 +31,9 @@ class App extends React.Component {
 
     const { bricks } = this.state
 
+    // console.log(this.props.state)
+    // console.log(this.props.dispatch)
+
     return (
 
       <MyLayout content={
@@ -45,4 +48,4 @@ class App extends React.Component {
 
 }
 
-export default App;
+export default connector({component: App});

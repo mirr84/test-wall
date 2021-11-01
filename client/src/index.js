@@ -2,22 +2,33 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import axios from 'axios'
+import {HashRouter as Router} from 'react-router-dom';
+import {createStore} from 'redux';
+import {Provider} from 'react-redux';
+import reducer from './store/reducers/index';
+import {getStorage} from "./store/utils/getStorage";
 
 import 'antd/dist/antd.css';
 import './index.css';
 
 import App from './App';
 
+const store = createStore(reducer);
+export default store;
+store.subscribe(() => getStorage().storage.setItem('store', JSON.stringify(store.getState())));
+
 axios.interceptors.request.use(
   (config) => {
-      config.headers.token = "token";
-      return Promise.resolve(config);
+    config.headers.token = store.getState().authReducer.token;
+    return Promise.resolve(config);
   }
 )
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Provider store={store}>
+    <Router>
+      <App />
+    </Router>
+  </Provider>,
   document.getElementById('root')
 );

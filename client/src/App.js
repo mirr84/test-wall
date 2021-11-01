@@ -4,48 +4,53 @@ import Form from './components/Form'
 import MyLayout from './components/Layout'
 import List from './components/List'
 
-import {connector} from "./store/utils/simpleConnector";
+import { Route, Switch } from "react-router-dom";
+
+import { connector } from "./store/utils/simpleConnector";
 import axios from 'axios'
 
-class App extends React.Component {
+{/* <div>
+    App
+    <Form addNewBrick={this.addNewBrick} />
+    <List bricks={bricks} />
+  </div>   */}
 
-  componentDidMount() {
-    this.fetchAllBricks()
+const methods = {
+  componentWillMount(props) {
+    console.log('init App', props);
   }
-
-  state = {
-    bricks: []
-  }  
-
-  fetchAllBricks = () =>
-    axios.get(`/api/bricks`)
-      .then(resp => resp.data)
-      .then(bricks => { this.setState({ bricks }) })
-
-  addNewBrick = (text) =>
-    axios.post(`/api/bricks`, { text })
-      .then(resp => resp.data)
-      .then(() => this.fetchAllBricks())
-
-  render() {
-
-    const { bricks } = this.state
-
-    // console.log(this.props.state)
-    // console.log(this.props.dispatch)
-
-    return (
-
-      <MyLayout content={
-        <div>
-          App
-          <Form addNewBrick={this.addNewBrick} />
-          <List bricks={bricks} />
-        </div>
-      } />
-    )
-  }
-
 }
 
-export default connector({component: App});
+// const fetchAllBricks = () =>
+//   axios.get(`/api/bricks`)
+//     .then(resp => resp.data)
+//     .then(bricks => { this.setState({ bricks }) })
+
+// const addNewBrick = (text) =>
+//   axios.post(`/api/bricks`, { text })
+//     .then(resp => resp.data)
+//     .then(() => this.fetchAllBricks())
+
+const App = (props) => {
+  return (<MyLayout
+    menuTop={
+      [
+        { key: 1, title: "1111", url: "1" },
+        { key: 2, title: "home", url: "home" },
+        { key: 3, title: "account", url: "account" },
+      ]
+    }
+    menuLeft={
+      []
+    }
+    content={
+        <Switch>
+          <Route  path="/" component={() => <div> empty </div>} />
+          <Route  path="/home" component={() => <div> home </div>} />
+          <Route  path="/account" component={() => <div> account </div>} />
+        </Switch>
+    }
+  />)
+}
+
+export default connector({ methods, component: App });

@@ -1,23 +1,34 @@
 import React from 'react';
 
+import { connector } from "./../store/utils/simpleConnector";
+
 import { Layout, Menu, Breadcrumb } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import { useHistory } from "react-router-dom"
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 
-class MyLayout extends React.Component {
+const methods = {
+    componentWillMount(props) {
+        console.log('init MyLayout', props);
+    }
+}
 
-  render () {
+const MyLayout = ({menuTop, state, dispatch, history, ...props}) => {
+
+    
 
     return (
         <Layout>
             <Header className="header">
                 <div className="logo" />
                 <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-                    <Menu.Item key="1">nav 1</Menu.Item>
-                    <Menu.Item key="2">nav 2</Menu.Item>
-                    <Menu.Item key="3">nav 3</Menu.Item>
+                    {
+                        menuTop.map(
+                            ({ key, title, url }) => <Menu.Item key={key} onClick={() => { history.push(`/${url}`) }}>{title}</Menu.Item>
+                        )
+                    }
                 </Menu>
             </Header>
 
@@ -44,15 +55,14 @@ class MyLayout extends React.Component {
                         </Menu>
                     </Sider>
                     <Content className="site-layout-content" style={{ padding: 10, minHeight: "280" }}>
-                        { this.props.content }
+                        {props.content}
                     </Content>
                 </Layout>
             </Content>
-            <Footer style={{ textAlign: 'center', padding: 10}}>Footer</Footer>
+            <Footer style={{ textAlign: 'center', padding: 10 }}>Footer</Footer>
         </Layout>
     )
-  }
 
 }
 
-export default MyLayout;
+export default connector({ methods, component: MyLayout });

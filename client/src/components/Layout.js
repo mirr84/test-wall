@@ -3,7 +3,6 @@ import React from 'react';
 import { connector } from "./../store/utils/simpleConnector";
 import { useLocation } from "react-router-dom";
 import { Layout, Menu, Breadcrumb } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
@@ -72,7 +71,7 @@ const MyLayout = ({ menu, state, dispatch, history, ...props }) => {
     return (
         <Layout>
             <Header className="header">
-                <div className="logo" onClick = {()=>history.push(`/`)} />
+                <div className="logo" onClick={() => history.push(`/`)} />
                 <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[`${getSelectAndOpen(menu, getUrlParam(location)).selectTop}`]}>
                     {
                         getMenuTop(menu).map(
@@ -80,7 +79,6 @@ const MyLayout = ({ menu, state, dispatch, history, ...props }) => {
                                 <Menu.Item key={key}
                                     onClick={() => {
                                         history.push(`/${url}`)
-                                        dispatch.setter('menuReducer', { menuTop: key })
                                     }}
                                 >
                                     {title}
@@ -102,9 +100,9 @@ const MyLayout = ({ menu, state, dispatch, history, ...props }) => {
                         }
                     </Breadcrumb>
                 }
-                <Layout>
+                <Layout className="content-layout">
                     {
-                        getMenuLeft(menu, getUrlParam(location)).length > 0 && <Sider width={200}>
+                        getMenuLeft(menu, getUrlParam(location)).length > 0 && <Sider width={200} style={{ marginLeft: 10 }}>
                             <Menu
                                 mode="inline"
                                 defaultSelectedKeys={[`${getSelectAndOpen(menu, getUrlParam(location)).selectLeft}`]}
@@ -133,7 +131,7 @@ const MyLayout = ({ menu, state, dispatch, history, ...props }) => {
                             </Menu>
                         </Sider>
                     }
-                    <Content className="site-layout-content" style={{ padding: 10, minHeight: "280" }}>
+                    <Content className="site-layout-content" style={{ marginLeft: 10, padding: 10, minHeight: "280" }}>
                         {props.content}
                     </Content>
                 </Layout>

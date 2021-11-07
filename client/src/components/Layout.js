@@ -1,59 +1,138 @@
 import React from 'react';
 
 import { connector } from "./../store/utils/simpleConnector";
-
+import { useLocation } from "react-router-dom";
 import { Layout, Menu, Breadcrumb } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import { useHistory } from "react-router-dom"
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 
+function getUrlParam(location) {
+    const aa = location.pathname.split('/')
+    aa.shift()
+    const length = aa.length
+    let first = null;
+    let second = null;
+    if (length > 0) {
+        first = aa[0]
+    }
+    if (length > 1) {
+        second = aa[1]
+    }
+    return { length, first, second };
+}
+
+const getMenuTop = (menu) => {
+    return menu || []
+}
+
+const getMenuLeft = (menu, url) => {
+    return menu.find(a => a.url === url.first) && menu.find(a => a.url === url.first).sub || []
+}
+
+const getSelectAndOpen = (menu, url) => {
+    const selectTop = menu.find(a => a.url === url.first) && menu.find(a => a.url === url.first).key
+    let selectLeft = null
+    let openLeft = null
+
+    let title1 = null
+    let title2 = null
+    let breadcrumb = []
+
+    let sub = getMenuLeft(menu, url)
+    for (let i = 0; i < sub.length; i++) {
+        for (let j = 0; j < sub[i].sub.length; j++) {
+            if (sub[i].sub[j].url === url.second) {
+                selectLeft = sub[i].sub[j].key
+                openLeft = sub[i].key
+                title2 = sub[i].sub[j].title
+            }
+        }
+    }
+
+    title1 = menu.find(a => a.url === url.first) && menu.find(a => a.url === url.first).title
+
+    if (title1) breadcrumb.push(title1)
+    if (title2) breadcrumb.push(title2)
+
+    return { selectTop, selectLeft, openLeft, breadcrumb }
+}
+
 const methods = {
-    componentWillMount(props) {
+    componentWillMount({ menu, state, dispatch, history, ...props }) {
         console.log('init MyLayout', props);
     }
 }
 
-const MyLayout = ({menuTop, state, dispatch, history, ...props}) => {
+const MyLayout = ({ menu, state, dispatch, history, ...props }) => {
 
-    
+    const location = useLocation();
 
     return (
         <Layout>
             <Header className="header">
-                <div className="logo" />
-                <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
+                <div className="logo" onClick = {()=>history.push(`/`)} />
+                <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[`${getSelectAndOpen(menu, getUrlParam(location)).selectTop}`]}>
                     {
-                        menuTop.map(
-                            ({ key, title, url }) => <Menu.Item key={key} onClick={() => { history.push(`/${url}`) }}>{title}</Menu.Item>
+                        getMenuTop(menu).map(
+                            ({ key, title, url }) => (
+                                <Menu.Item key={key}
+                                    onClick={() => {
+                                        history.push(`/${url}`)
+                                        dispatch.setter('menuReducer', { menuTop: key })
+                                    }}
+                                >
+                                    {title}
+                                </Menu.Item>
+                            )
                         )
                     }
                 </Menu>
             </Header>
 
             <Content className="site-layout-background">
-                <Breadcrumb>
-                    <Breadcrumb.Item>Home</Breadcrumb.Item>
-                    <Breadcrumb.Item>List</Breadcrumb.Item>
-                    <Breadcrumb.Item>App</Breadcrumb.Item>
-                </Breadcrumb>
+                {
+                    getSelectAndOpen(menu, getUrlParam(location)).breadcrumb.length > 0 &&
+                    <Breadcrumb>
+                        {
+                            getSelectAndOpen(menu, getUrlParam(location)).breadcrumb.map(
+                                a => <Breadcrumb.Item>{a}</Breadcrumb.Item>
+                            )
+                        }
+                    </Breadcrumb>
+                }
                 <Layout>
-                    <Sider width={200}>
-                        <Menu
-                            mode="inline"
-                            defaultSelectedKeys={['1']}
-                            defaultOpenKeys={['sub1']}
-                            style={{ height: '100%' }}
-                        >
-                            <SubMenu key="sub1" icon={<UserOutlined />} title="subnav 1">
-                                <Menu.Item key="1">option1</Menu.Item>
-                                <Menu.Item key="2">option2</Menu.Item>
-                                <Menu.Item key="3">option3</Menu.Item>
-                                <Menu.Item key="4">option4</Menu.Item>
-                            </SubMenu>
-                        </Menu>
-                    </Sider>
+                    {
+                        getMenuLeft(menu, getUrlParam(location)).length > 0 && <Sider width={200}>
+                            <Menu
+                                mode="inline"
+                                defaultSelectedKeys={[`${getSelectAndOpen(menu, getUrlParam(location)).selectLeft}`]}
+                                defaultOpenKeys={[`${getSelectAndOpen(menu, getUrlParam(location)).openLeft}`]}
+                                style={{ height: '100%' }}
+                            >
+                                {
+                                    getMenuLeft(menu, getUrlParam(location)).map(
+                                        a => (
+                                            <SubMenu key={a.key} title={a.title}>
+                                                {
+                                                    a.sub.map(b => (
+                                                        <Menu.Item key={b.key}
+                                                            onClick={() => {
+                                                                history.push(`/${getUrlParam(location).first}/${b.url}`)
+                                                            }} >
+                                                            {b.title}
+                                                        </Menu.Item>
+                                                    )
+                                                    )
+                                                }
+                                            </SubMenu>
+                                        )
+                                    )
+                                }
+                            </Menu>
+                        </Sider>
+                    }
                     <Content className="site-layout-content" style={{ padding: 10, minHeight: "280" }}>
                         {props.content}
                     </Content>

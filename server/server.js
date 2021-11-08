@@ -57,7 +57,7 @@ function apiPromise (app, path=[], type = "private", method = "get") {
 apiPromise(app, ["api","bricks"], "public", "get")
 apiPromise(app, ["api","bricks"], "public", "post")
 
-apiPromise(app, ["api","users","auth"], "public", "get")
+apiPromise(app, ["api","users","auth"], "public", "post")
 apiPromise(app, ["api","users","check"], "private", "get")
 apiPromise(app, ["api","users","reg"], "public", "post")
 

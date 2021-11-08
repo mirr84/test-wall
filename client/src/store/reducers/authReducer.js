@@ -4,6 +4,7 @@ import {getStorage} from "../utils/getStorage";
 const initState = {
 
     isAuth: false,
+    token: ''
 
 }
 

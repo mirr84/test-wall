@@ -71,7 +71,11 @@ const MyLayout = ({ menu, state, dispatch, history, ...props }) => {
     return (
         <Layout>
             <Header className="header">
-                <div className="logo" onClick={() => history.push(`/`)} />
+                <div className="logo" onClick={
+                    () => {
+                        history.push(`/`)
+                    }
+                } />
                 <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[`${getSelectAndOpen(menu, getUrlParam(location)).selectTop}`]}>
                     {
                         getMenuTop(menu).map(
@@ -105,6 +109,7 @@ const MyLayout = ({ menu, state, dispatch, history, ...props }) => {
                         getMenuLeft(menu, getUrlParam(location)).length > 0 && <Sider width={200} style={{ marginLeft: 10 }}>
                             <Menu
                                 mode="inline"
+                                // mode="vertical"
                                 defaultSelectedKeys={[`${getSelectAndOpen(menu, getUrlParam(location)).selectLeft}`]}
                                 defaultOpenKeys={[`${getSelectAndOpen(menu, getUrlParam(location)).openLeft}`]}
                                 style={{ height: '100%' }}

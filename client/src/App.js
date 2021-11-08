@@ -1,6 +1,8 @@
 import React from 'react';
 
 import MyLayout from './components/Layout'
+import Login from './components/Login'
+import Registration from './components/Registration'
 
 import { Route, Switch } from "react-router-dom";
 import { Result, Button } from 'antd';
@@ -31,13 +33,13 @@ const methods = {
 
 const menu = [
   { 
-    key: 1000, title: "main", url: "main_url",
+    key: 1000, title: "main", url: "profile",
     sub: [
       { 
-        key: 100, title: "subtitle1",
+        key: 100, title: "profile",
         sub: [
-          { key: 10, title: "opin1", url: "op1_url" },
-          { key: 20, title: "opin2", url: "op2_url" }
+          { key: 10, title: "login", url: "login" },
+          { key: 20, title: "reg", url: "reg" }
         ]
       },
       { 
@@ -75,6 +77,9 @@ const App = (props) => {
 
           <Route exact path="/main_url" component={() => <div> main </div>} />
           <Route exact path="/main_url/op1_url" component={() => <div> op1_url </div>} />
+
+          <Route exact path="/profile/login" component={() => <Login/> } />
+          <Route exact path="/profile/reg" component={() => <Registration/> } />          
 
           <Route exact path="/home_url" component={() => <div> home </div>} />
           <Route exact path="/account_url" component={() => <div> account </div>} />

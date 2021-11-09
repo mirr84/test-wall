@@ -3,7 +3,17 @@ exports.exec = (app, connection, path) =>
         .post(
             path,
             (req, res) => {
-                const text = req.body;
-                res.sendStatus(200)
+                const username = req.body.username;
+                const password = req.body.password; 
+
+                connection.query(`INSERT INTO users (login, pass) VALUES ('${username}', '${password}')`)
+                .then(result => {
+                    res.sendStatus(200)
+                })
+                .catch(err => {
+                    console.log(err)
+                    res.sendStatus(500)
+                })   
+
             }
         )

@@ -1,8 +1,10 @@
 import React from 'react';
 
 import MyLayout from './components/Layout'
-import Login from './components/Login'
-import Registration from './components/Registration'
+
+import Profile from './components/profile/Profile'
+import Login from './components/profile/Login'
+import Registration from './components/profile/Registration'
 
 import { Route, Switch } from "react-router-dom";
 import { Result, Button } from 'antd';
@@ -33,32 +35,25 @@ const methods = {
 
 const menu = [
   { 
-    key: 1000, title: "main", url: "profile",
+    key: 1000, title: "Профиль", url: "profile", a: 0,  // a 0 - всегда, 1 - только аутх, 2 - тольуо не аутъ
     sub: [
       { 
-        key: 100, title: "profile",
+        key: 100, title: "Профиль", a: 2,
         sub: [
-          { key: 10, title: "login", url: "login" },
-          { key: 20, title: "reg", url: "reg" }
-        ]
-      },
-      { 
-        key: 200, title: "subtitle2",
-        sub: [
-          { key: 30, title: "opin3", url: "op3_url" },
-          { key: 40, title: "opin4", url: "op4_url" }
+          { key: 10, title: "Авторизация", url: "login", a: 2 },
+          { key: 20, title: "Регистрация", url: "registration", a: 2 }
         ]
       }
     ]
   },
   { 
-    key: 2000, title: "home", url: "home_url",
+    key: 2000, title: "home", url: "home_url", a: 1,
     sub: [
       { 
-        key: 100, title: "subtitle3",
+        key: 100, title: "subtitle3", a: 1,
         sub: [
-          { key: 50, title: "opin5", url: "op1_url" },
-          { key: 60, title: "opin6", url: "op2_url" }
+          { key: 50, title: "opin5", url: "op1_url", a: 1 },
+          { key: 60, title: "opin6", url: "op2_url", a: 1 }
         ]
       }
     ]
@@ -78,8 +73,9 @@ const App = (props) => {
           <Route exact path="/main_url" component={() => <div> main </div>} />
           <Route exact path="/main_url/op1_url" component={() => <div> op1_url </div>} />
 
+          <Route exact path="/profile" component={() => <Profile/> } />
           <Route exact path="/profile/login" component={() => <Login/> } />
-          <Route exact path="/profile/reg" component={() => <Registration/> } />          
+          <Route exact path="/profile/registration" component={() => <Registration/> } />          
 
           <Route exact path="/home_url" component={() => <div> home </div>} />
           <Route exact path="/account_url" component={() => <div> account </div>} />

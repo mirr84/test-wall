@@ -19,7 +19,7 @@ store.subscribe(() => getStorage().storage.setItem('store', JSON.stringify(store
 
 axios.interceptors.request.use(
   (config) => {
-    config.headers.token = store.getState().authReducer.token;
+    if (store.getState().authReducer.token) config.headers.token = store.getState().authReducer.token;
     return Promise.resolve(config);
   }
 )

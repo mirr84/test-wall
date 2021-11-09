@@ -22,16 +22,17 @@ function getUrlParam(location) {
     return { length, first, second };
 }
 
-const getMenuTop = (menu) => {
-    return menu || []
+const getMenuTop = (menu, isAuth = 0) => {
+    return (menu || []).filter( a => a.a === isAuth || a.a === 0 )
 }
 
-const getMenuLeft = (menu, url) => {
-    return menu.find(a => a.url === url.first) && menu.find(a => a.url === url.first).sub || []
+const getMenuLeft = (menu, url, isAuth = 0) => {
+    return (getMenuTop(menu, isAuth).find(a => a.url === url.first) && getMenuTop(menu, isAuth).find(a => a.url === url.first).sub || [])
+                .filter( a => a.a === isAuth || a.a === 0 )
 }
 
-const getSelectAndOpen = (menu, url) => {
-    const selectTop = menu.find(a => a.url === url.first) && menu.find(a => a.url === url.first).key
+const getSelectAndOpen = (menu, url, isAuth = 0) => {
+    const selectTop = getMenuTop(menu, isAuth).find(a => a.url === url.first) && getMenuTop(menu, isAuth).find(a => a.url === url.first).key
     let selectLeft = null
     let openLeft = null
 
@@ -39,7 +40,7 @@ const getSelectAndOpen = (menu, url) => {
     let title2 = null
     let breadcrumb = []
 
-    let sub = getMenuLeft(menu, url)
+    let sub = getMenuLeft(getMenuTop(menu, isAuth), url, isAuth)
     for (let i = 0; i < sub.length; i++) {
         for (let j = 0; j < sub[i].sub.length; j++) {
             if (sub[i].sub[j].url === url.second) {
@@ -68,6 +69,9 @@ const MyLayout = ({ menu, state, dispatch, history, ...props }) => {
 
     const location = useLocation();
 
+     // 0 - всегда, 1 - только аутх, 2 - тольуо не аутъ
+    const isAuth = !!state.authReducer.isAuth ? 1 : 2;
+
     return (
         <Layout>
             <Header className="header">
@@ -76,9 +80,9 @@ const MyLayout = ({ menu, state, dispatch, history, ...props }) => {
                         history.push(`/`)
                     }
                 } />
-                <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[`${getSelectAndOpen(menu, getUrlParam(location)).selectTop}`]}>
+                <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[`${getSelectAndOpen(menu, getUrlParam(location), isAuth).selectTop}`]}>
                     {
-                        getMenuTop(menu).map(
+                        getMenuTop(menu, isAuth).map(
                             ({ key, title, url }) => (
                                 <Menu.Item key={key}
                                     onClick={() => {
@@ -95,43 +99,44 @@ const MyLayout = ({ menu, state, dispatch, history, ...props }) => {
 
             <Content className="site-layout-background">
                 {
-                    getSelectAndOpen(menu, getUrlParam(location)).breadcrumb.length > 0 &&
+                    getSelectAndOpen(menu, getUrlParam(location), isAuth).breadcrumb.length > 0 &&
                     <Breadcrumb>
                         {
-                            getSelectAndOpen(menu, getUrlParam(location)).breadcrumb.map(
-                                a => <Breadcrumb.Item>{a}</Breadcrumb.Item>
+                            getSelectAndOpen(menu, getUrlParam(location), isAuth).breadcrumb.map(
+                                (a, idx) => <Breadcrumb.Item key={idx}>{a}</Breadcrumb.Item>
                             )
                         }
                     </Breadcrumb>
                 }
                 <Layout className="content-layout">
                     {
-                        getMenuLeft(menu, getUrlParam(location)).length > 0 && <Sider width={200} style={{ marginLeft: 10 }}>
+                        getMenuLeft(menu, getUrlParam(location), isAuth).length > 0 && <Sider width={200} style={{ marginLeft: 10 }}>
                             <Menu
                                 mode="inline"
                                 // mode="vertical"
-                                defaultSelectedKeys={[`${getSelectAndOpen(menu, getUrlParam(location)).selectLeft}`]}
-                                defaultOpenKeys={[`${getSelectAndOpen(menu, getUrlParam(location)).openLeft}`]}
+                                defaultSelectedKeys={[`${getSelectAndOpen(menu, getUrlParam(location), isAuth).selectLeft}`]}
+                                defaultOpenKeys={[`${getSelectAndOpen(menu, getUrlParam(location), isAuth).openLeft}`]}
                                 style={{ height: '100%' }}
                             >
                                 {
-                                    getMenuLeft(menu, getUrlParam(location)).map(
-                                        a => (
-                                            <SubMenu key={a.key} title={a.title}>
-                                                {
-                                                    a.sub.map(b => (
-                                                        <Menu.Item key={b.key}
-                                                            onClick={() => {
-                                                                history.push(`/${getUrlParam(location).first}/${b.url}`)
-                                                            }} >
-                                                            {b.title}
-                                                        </Menu.Item>
-                                                    )
-                                                    )
-                                                }
-                                            </SubMenu>
+                                    getMenuLeft(menu, getUrlParam(location), isAuth)
+                                        .map(
+                                            a => (
+                                                <SubMenu key={a.key} title={a.title}>
+                                                    {
+                                                        a.sub.map(b => (
+                                                            <Menu.Item key={b.key}
+                                                                onClick={() => {
+                                                                    history.push(`/${getUrlParam(location).first}/${b.url}`)
+                                                                }} >
+                                                                {b.title}
+                                                            </Menu.Item>
+                                                        )
+                                                        )
+                                                    }
+                                                </SubMenu>
+                                            )
                                         )
-                                    )
                                 }
                             </Menu>
                         </Sider>

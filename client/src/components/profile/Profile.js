@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import { connector } from "./../../store/utils/simpleConnector";
 import axios from 'axios';
@@ -16,7 +16,7 @@ const methods = {
   componentWillMount({ menu, state, dispatch, history, ...props }) {
     console.log('init Profile', props);
 
-    getCheckAuth(dispatch)
+    // getCheckAuth(dispatch)
   }
 }
 
@@ -27,11 +27,13 @@ const onLogout = (dispatch, history) => {
 
 const Profile = ({ state, dispatch, history, ...props }) => {
 
+  const isAuth = state.authReducer.isAuth
+
   return (
     <div>
-      <Button onClick={ ()=>onLogout(dispatch, history) }>
-        Выйти
-      </Button>
+      {
+        isAuth && <Button onClick={ ()=>onLogout(dispatch, history) }>Выйти</Button> || history.push(`/profile/login`)
+      }      
     </div>
   )
 

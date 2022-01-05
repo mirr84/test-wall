@@ -15,8 +15,7 @@ const getCheckAuth = (dispatch) =>
 const methods = {
   componentWillMount({ menu, state, dispatch, history, ...props }) {
     console.log('init Profile', props);
-
-    // getCheckAuth(dispatch)
+    state.authReducer.isAuth || history.push(`/profile/login`)
   }
 }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { connector } from "./../store/utils/simpleConnector";
+import { connector } from "./../../store/utils/simpleConnector";
 import { useLocation } from "react-router-dom";
 import { Layout, Menu, Breadcrumb } from 'antd';
 
@@ -23,12 +23,12 @@ function getUrlParam(location) {
 }
 
 const getMenuTop = (menu, isAuth = 0) => {
-    return (menu || []).filter( a => a.a === isAuth || a.a === 0 )
+    return (menu || []).filter(a => a.a === isAuth || a.a === 0)
 }
 
 const getMenuLeft = (menu, url, isAuth = 0) => {
     return (getMenuTop(menu, isAuth).find(a => a.url === url.first) && getMenuTop(menu, isAuth).find(a => a.url === url.first).sub || [])
-                .filter( a => a.a === isAuth || a.a === 0 )
+        .filter(a => a.a === isAuth || a.a === 0)
 }
 
 const getSelectAndOpen = (menu, url, isAuth = 0) => {
@@ -38,6 +38,7 @@ const getSelectAndOpen = (menu, url, isAuth = 0) => {
 
     let title1 = null
     let title2 = null
+    let title3 = null
     let breadcrumb = []
 
     let sub = getMenuLeft(getMenuTop(menu, isAuth), url, isAuth)
@@ -45,16 +46,20 @@ const getSelectAndOpen = (menu, url, isAuth = 0) => {
         for (let j = 0; j < sub[i].sub.length; j++) {
             if (sub[i].sub[j].url === url.second) {
                 selectLeft = sub[i].sub[j].key
-                openLeft = sub[i].key
-                title2 = sub[i].sub[j].title
+                openLeft = sub[i].key   
+                title2 = sub[i].title             
+                title3 = sub[i].sub[j].title                
             }
         }
     }
 
     title1 = menu.find(a => a.url === url.first) && menu.find(a => a.url === url.first).title
 
+    // debugger
+
     if (title1) breadcrumb.push(title1)
     if (title2) breadcrumb.push(title2)
+    if (title3) breadcrumb.push(title3)
 
     return { selectTop, selectLeft, openLeft, breadcrumb }
 }
@@ -69,7 +74,7 @@ const MyLayout = ({ menu, state, dispatch, history, ...props }) => {
 
     const location = useLocation();
 
-     // 0 - всегда, 1 - только аутх, 2 - тольуо не аутъ
+    // 0 - всегда, 1 - только аутх, 2 - тольуо не аутъ
     const isAuth = !!state.authReducer.isAuth ? 1 : 2;
 
     return (

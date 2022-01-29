@@ -8,6 +8,8 @@ import Registration from './components/profile/Registration'
 
 import Accounts from './components/finance/accounts/Accounts'
 import Statistics from './components/finance/accounts/Statistics'
+import Categories from './components/finance/categories/Categories'
+
 
 import { Route, Switch } from "react-router-dom";
 import { Result, Button } from 'antd';
@@ -84,7 +86,7 @@ const App = (props) => {
 
         <Route exact path="/finance/accounts" component={() => <Accounts />} />
         <Route exact path="/finance/statistics" component={() => <Statistics />} />
-        <Route exact path="/finance/categories" component={() => <div> categories </div>} />
+        <Route exact path="/finance/categories" component={() => <Categories />} />
 
         <Route path="*" component={() => <Result status="404" title="404" subTitle="К сожалению, посещенная вами страница не существует." />} />
       </Switch>

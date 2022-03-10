@@ -33,6 +33,10 @@ apiPromise(app, ["api","users","check"], "private", "get")
 apiPromise(app, ["api","users","auth"], "public", "post")
 apiPromise(app, ["api","users","reg"], "public", "post")
 
+apiPromise(app, ["api","accounts","list"], "private", "get")
+
+// apiPromise(app, ["api","users","reg"], "public", "post")
+
 app.use(express.static(path.join(__dirname, './../client/build')))
 app.get('*', (req, res) => { res.sendFile(path.join(__dirname, './../client/build/index.html')) })
 

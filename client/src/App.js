@@ -6,6 +6,7 @@ import Profile from './components/profile/Profile'
 import Login from './components/profile/Login'
 import Registration from './components/profile/Registration'
 
+import Finance from './components/finance/Finance'
 import Accounts from './components/finance/accounts/Accounts'
 import Statistics from './components/finance/accounts/Statistics'
 import Categories from './components/finance/categories/Categories'
@@ -84,6 +85,7 @@ const App = (props) => {
         <Route exact path="/profile/login" component={() => <Login />} />
         <Route exact path="/profile/registration" component={() => <Registration />} />
 
+        <Route exact path="/finance" component={() => <Finance />} />
         <Route exact path="/finance/accounts" component={() => <Accounts />} />
         <Route exact path="/finance/statistics" component={() => <Statistics />} />
         <Route exact path="/finance/categories" component={() => <Categories />} />

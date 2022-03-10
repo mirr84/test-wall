@@ -1,66 +1,51 @@
 import React, { useState } from 'react';
 
 import { connector } from "./../../../store/utils/simpleConnector";
+import axios from 'axios';
 
-import { Form, Input, Button, Checkbox } from 'antd';
-import { notification } from 'antd';
+import { Table } from 'antd';
 
-import { Table, Tag, Space } from 'antd';
+const getDate = (dispatch, pagination, filters, sorter) => {
+
+  dispatch.setter('accountsReducer', { loading: true, pagination, filters, sorter })
+
+  axios.get(`/api/accounts/list`, {params: {...pagination, ...filters, ...sorter} })
+    .then(({data}) => {
+      console.log("resp - " + JSON.stringify(data))
+      dispatch.setter('accountsReducer', { data })
+      dispatch.setter('accountsReducer', { loading: false })
+    })
+    .catch(err => {
+      dispatch.setter('accountsReducer', { loading: false })
+    })
+}
 
 const methods = {
   componentWillMount({ menu, state, dispatch, history, ...props }) {
     console.log('init Accounts', props);
-    state.authReducer.isAuth || history.push(`/profile/login`)
+    state.authReducer.isAuth || history.push(`/profile/login`);
   }
 }
 
 const columns = [
   {
-    title: 'Name',
-    dataIndex: 'name',
+    title: 'id',
+    dataIndex: 'id',
     sorter: true,
-    render: name => `${name}`,
+    render: id => `${id}`,
   },
   {
-    title: 'Age',
-    dataIndex: 'age',
+    title: 'title',
+    dataIndex: 'title',
     sorter: true,
-    render: age => `${age}`,
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    sorter: true,
-    render: address => `${address}`,
+    render: title => `${title}`,
   },
 ];
 
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-  },
-];
-
-const pagination = { current: 1, pageSize: 10 }
-const loading = false
-
-const handleTableChange = (pagination, filters, sorter) => {
+const handleTableChange = (dispatch, pagination, filters, sorter) => {
+  getDate(dispatch, pagination, filters, sorter);
 }
+
 
 const Accounts = ({ state, dispatch, history, ...props }) => {
 
@@ -68,10 +53,10 @@ const Accounts = ({ state, dispatch, history, ...props }) => {
     <Table
       columns={columns}
       rowKey={record => record.uuid}
-      dataSource={data}
-      pagination={pagination}
-      loading={loading}
-      onChange={handleTableChange}
+      dataSource={state.accountsReducer.data || []}
+      pagination={state.accountsReducer.pagination}
+      loading={state.accountsReducer.loading}
+      onChange={(pagination, filters, sorter) => handleTableChange(dispatch, pagination, filters, sorter)}
       size="small"
     />
   )

@@ -1,9 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 import { connector } from "./../../store/utils/simpleConnector";
-import axios from 'axios';
-
-import { Input, Button } from 'antd';
 
 const methods = {
   componentWillMount({ menu, state, dispatch, history, ...props }) {

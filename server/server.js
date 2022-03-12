@@ -15,8 +15,8 @@ const connection = mysql.createConnection({
 function intervalFunc() {
     connection.query("select now()")
         .then(result => result[0])
-        .then(result => {})
-        .catch(err => {});
+        .then(result => { console.log('db on') } )
+        .catch(err => { console.log('db off')  } );    
 }
 setInterval(intervalFunc, 3000);
 

@@ -13,7 +13,7 @@ import Categories from './components/finance/categories/Categories'
 
 
 import { Route, Switch } from "react-router-dom";
-import { Result, Button } from 'antd';
+import { Result } from 'antd';
 
 import { connector } from "./store/utils/simpleConnector";
 

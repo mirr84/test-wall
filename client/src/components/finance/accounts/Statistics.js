@@ -1,11 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { connector } from "./../../../store/utils/simpleConnector";
-
-import { Form, Input, Button, Checkbox } from 'antd';
-import { notification } from 'antd';
-
-import { Table, Tag, Space } from 'antd';
 
 const methods = {
   componentWillMount({ menu, state, dispatch, history, ...props }) {

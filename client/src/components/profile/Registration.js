@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { connector } from "./../../store/utils/simpleConnector";
 
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button } from 'antd';
 import { notification } from 'antd';
 
 import axios from 'axios';
